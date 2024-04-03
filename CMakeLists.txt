@@ -13,7 +13,7 @@ add_subdirectory(libSDL2pp)
 
 file(GLOB SOURCES
 
-    include/*.hpp
+  include/*.hpp
 	include/*.h
 	src/*.cpp
 )
