@@ -6,12 +6,15 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
+#include <quickjs.h>
+
+
 using namespace SDL2pp;
 
 
 void fillTexture(Texture &tex)
 {
-	auto ticks = SDL_GetTicks() >> 2;
+	auto ticks = SDL_GetTicks() >> 4;
 	auto lock = tex.Lock();
 	Uint8* pixels = (Uint8*)lock.GetPixels();
 	for (Uint16 y = 0; y < 200; y++) {
@@ -32,7 +35,7 @@ try
 	SDL sdl(SDL_INIT_VIDEO);
 
 	// Create main window: 640x480 dimensions, resizable, "SDL2pp demo" title
-	Window window("SDL2pp demo",
+	Window window("pixelfun",
 				  SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 				  640, 400,
 				  SDL_WINDOW_RESIZABLE);
@@ -67,17 +70,18 @@ try
 			}
 		}
 
-		int vcenter = renderer.GetOutputHeight() / 2; // Y coordinate of window center
+		// int vcenter = renderer.GetOutputHeight() / 2; // Y coordinate of window center
 
 		// Clear screen
 		renderer.Clear();
 		fillTexture(vram);
+		/*
 		renderer.SetTarget(vram);
 
 		renderer.SetDrawColor(Color(255, 255, 255));
 		renderer.DrawPoint(Point(100, 100));
 		renderer.DrawLine(Point(0,0), Point(320,200));
-		renderer.SetTarget();
+		renderer.SetTarget(); */
 		renderer.Copy(vram);
 		// Show rendered frame
 		renderer.Present();
