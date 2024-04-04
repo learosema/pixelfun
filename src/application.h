@@ -18,7 +18,7 @@ typedef std::function<std::vector<uint8_t> (int, int, double)> pxfun_t;
 class Application
 {
 public:
-	int run();
+	int run(const std::string& path);
 
 private:
 	void update(Texture& texture, const pxfun_t& fun);

@@ -1,31 +1,29 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
+#include <string>
 
 #include "application.h"
 #include "quickjspp.hpp"
 
-int Application::run()
+int Application::run(const std::string& path)
 {
-
     qjs::Runtime runtime;
     qjs::Context context(runtime);
-
-
 	context.eval(R"script(
-
 		const WIDTH = 320;
 		const HEIGHT = 200;
-
 	)script");
 
 	context.eval(R"script(
-
 		function pixelfun(x, y, t) {
-			return [255, ((t*500+x*y)&255)|0, 255];
+			return [255, 0, 0];
 		}
-
 	)script");
+
+	if (path.length() > 0) {
+		context.eval(readFile(path));
+	}
 
 	pxfun_t pxfun = (pxfun_t) context.eval("pixelfun");
 
