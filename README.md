@@ -9,8 +9,8 @@ Create a function `pixelfun()` that returns a color at a given tick time, and sa
 ```js
 function pixelfun(x,y,t) {
   const red = 255;
-  const green = x * 255 / WIDTH;
-  const blue = y * 255 / HEIGHT;
+  const green = (x * 255 / WIDTH)|0;
+  const blue = (y * 255 / HEIGHT)|0;
   return [red, green, blue];
 }
 ```
