@@ -4,7 +4,7 @@ Basically it is QuickJS + SDL2 = PixelFun.
 
 ## Usage
 
-Create a function `pixelfun()` inside a javascript file:
+Create a function `pixelfun()` that returns a color at a given tick time, and save it inside a javascript file:
 
 ```js
 function pixelfun(x,y,t) {

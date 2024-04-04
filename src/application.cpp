@@ -1,10 +1,34 @@
-#include "application.h"
 #include <sstream>
 #include <iostream>
 #include <fstream>
 
+#include "application.h"
+#include "quickjspp.hpp"
+
 int Application::run()
 {
+
+    qjs::Runtime runtime;
+    qjs::Context context(runtime);
+
+
+	context.eval(R"script(
+
+		const WIDTH = 320;
+		const HEIGHT = 200;
+
+	)script");
+
+	context.eval(R"script(
+
+		function pixelfun(x, y, t) {
+			return [255, ((t*500+x*y)&255)|0, 255];
+		}
+
+	)script");
+
+	pxfun_t pxfun = (pxfun_t) context.eval("pixelfun");
+
 	SDL sdl(SDL_INIT_VIDEO);
 
 	Window window("pixelfun",
@@ -40,7 +64,7 @@ int Application::run()
 		}
 
 		renderer.Clear();
-		update(texture);
+		update(texture, pxfun);
 
 		/*
 		renderer.SetTarget(vram);
@@ -58,7 +82,7 @@ int Application::run()
 	return 0;
 }
 
-void Application::update(Texture& texture) {
+void Application::update(Texture& texture, const pxfun_t& fun) {
 	auto ticks = SDL_GetTicks() >> 4;
 	auto lock = texture.Lock();
 	Uint8* pixels = (Uint8*)lock.GetPixels();
@@ -66,15 +90,17 @@ void Application::update(Texture& texture) {
 		for (Uint16 x = 0; x < 320; x++) {
 
 			Uint16 i = y * 320 + x;
-			pixels[i * 4 + 0] = ticks + (x * 255 / 319);
-			pixels[i * 4 + 1] = (Uint8)((ticks) & 255);
-			pixels[i * 4 + 2] = 0;
+			double ticks = SDL_GetTicks() / 1000.0;
+			auto color = fun(x, y, ticks);
+			pixels[i * 4 + 0] = color[0];
+			pixels[i * 4 + 1] = color[1];
+			pixels[i * 4 + 2] = color[2];
 			pixels[i * 4 + 3] = 255;
 		}
 	}
 }
 
-std::string Application::readFile(std::string path)
+std::string Application::readFile(const std::string& path)
 {
     std::stringstream str;
     std::ifstream stream(path.c_str());
@@ -85,6 +111,7 @@ std::string Application::readFile(std::string path)
             str << (char) stream.get();
         }
         stream.close();
-        return str.str();
     }
+	return str.str();
 }
+

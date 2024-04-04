@@ -11,13 +11,18 @@
 
 using namespace SDL2pp;
 
+
+typedef std::function<std::vector<uint8_t> (int, int, double)> pxfun_t;
+
+
 class Application
 {
 public:
 	int run();
 
 private:
-	void update(Texture& texture);
+	void update(Texture& texture, const pxfun_t& fun);
 
-	std::string readFile(std::string path);
+	std::string readFile(const std::string &path);
+
 };
