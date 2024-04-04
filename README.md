@@ -2,6 +2,8 @@
 
 Basically it is QuickJS + SDL2 = PixelFun.
 
+Disclaimer: Sort of. Still very unstable. So maybe not too much fun.
+
 ## Usage
 
 Create a function `pixelfun()` that returns a color at a given tick time, and save it inside a javascript file:
