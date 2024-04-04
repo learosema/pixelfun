@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.28 FATAL_ERROR)
-project(SDL2Test LANGUAGES CXX)
+project(PixelFun LANGUAGES CXX)
 
 # add compilation flags
 set(CMAKE_CXX_STANDARD 17)
@@ -12,9 +12,8 @@ add_subdirectory(libSDL2pp)
 
 
 file(GLOB SOURCES
-
-  include/*.hpp
-	include/*.h
+	src/*.h
+	src/*.hpp
 	src/*.cpp
 )
 
