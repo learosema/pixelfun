@@ -66,13 +66,6 @@ int Application::run()
 		renderer.Clear();
 		update(texture, pxfun);
 
-		/*
-		renderer.SetTarget(vram);
-
-		renderer.SetDrawColor(Color(255, 255, 255));
-		renderer.DrawPoint(Point(100, 100));
-		renderer.DrawLine(Point(0,0), Point(320,200));
-		renderer.SetTarget(); */
 		renderer.Copy(texture);
 		renderer.Present();
 
