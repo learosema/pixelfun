@@ -25,6 +25,12 @@ pixelfun pixelfun.js
 
 Enjoy 💖
 
+## Build instructions
+
+Pixelfun uses the CMake build system. Additionally, it requires the SDL2 development files installed on the system.
+
+On a mac, the required dependencies can be installed via `brew install cmake sdl2 sdl2_image`. Build instructions on other platforms will follow.
+
 ## Attributions
 
 PixelFun wouldn't be possible without these:
