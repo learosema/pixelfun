@@ -44,8 +44,6 @@ file(GLOB QUICKJS_HEADERS
   ./quickjs/*.h
 )
 file(MAKE_DIRECTORY include)
-file(COPY ${QUICKJS_HEADERS} DESTINATION include)
-
 
 foreach(Item IN LISTS QUICKJS_HEADERS)
 	cmake_path(GET Item FILENAME HFile)
