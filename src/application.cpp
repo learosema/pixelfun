@@ -2,11 +2,19 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cmath>
 
 #include "application.h"
 #include "quickjspp.hpp"
 
-int Application::run(const std::string& path)
+int Application::load(const std::string &path)
+{
+	std::string code = (path.length() > 0) ? readFile(path) : "";
+
+	return run(code);
+}
+
+int Application::run(const std::string &code)
 {
     qjs::Runtime runtime;
     qjs::Context context(runtime);
@@ -21,8 +29,8 @@ int Application::run(const std::string& path)
 		}
 	)script");
 
-	if (path.length() > 0) {
-		context.eval(readFile(path));
+	if (code.length() > 0) {
+		context.eval(code);
 	}
 
 	pxfun_t pxfun = (pxfun_t) context.eval("pixelfun");
@@ -83,9 +91,9 @@ void Application::update(Texture& texture, const pxfun_t& fun) {
 			Uint16 i = y * 320 + x;
 			double ticks = SDL_GetTicks() / 1000.0;
 			auto color = fun(x, y, ticks);
-			pixels[i * 4 + 0] = color[0];
-			pixels[i * 4 + 1] = color[1];
-			pixels[i * 4 + 2] = color[2];
+			pixels[i * 4 + 0] = static_cast<uint8_t>(std::floor(color[0]));
+			pixels[i * 4 + 1] = static_cast<uint8_t>(std::floor(color[1]));
+			pixels[i * 4 + 2] = static_cast<uint8_t>(std::floor(color[2]));
 			pixels[i * 4 + 3] = 255;
 		}
 	}

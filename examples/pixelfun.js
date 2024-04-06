@@ -1,3 +1,5 @@
 function pixelfun(x, y, t) {
-  return [(x * 255 / WIDTH)|0, (y * 255 / HEIGHT)|0, 0];
+  return [
+	(x * 255 / WIDTH),
+	(y * 255 / HEIGHT), 128 + 127*Math.sin(x*0.01 + t*0.1)];
 }

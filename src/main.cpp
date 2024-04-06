@@ -10,7 +10,7 @@ try
 {
 	Application app;
 
-	return app.run(std::string(argc == 2 ? argv[1] : ""));
+	return app.load(std::string(argc == 2 ? argv[1] : ""));
 }
 catch (exception &e)
 {
