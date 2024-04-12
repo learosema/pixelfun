@@ -2,10 +2,11 @@
 
 #include "iscriptenv.h"
 #include "quickjspp.hpp"
+#include "icanvas.h"
 
 class QuickJSEnv: IScriptEnv {
 public:
-	QuickJSEnv(const std::string& code);
+	QuickJSEnv(const std::string& code, ICanvas& api);
 
 	void setup();
 

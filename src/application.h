@@ -3,7 +3,6 @@
 #include <exception>
 
 #include <SDL.h>
-// #include <SDL_image.h>
 
 #include <SDL2pp/SDL2pp.hh>
 
