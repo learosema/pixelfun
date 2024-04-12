@@ -5,6 +5,12 @@ QuickJSEnv::QuickJSEnv(const std::string& code)
 {
 	m_pRuntime = std::make_shared<qjs::Runtime>();
 	m_pContext = std::make_shared<qjs::Context>(*m_pRuntime);
+
+
+	auto &module = m_pContext->addModule("p5-alike");
+
+
+
 	m_pContext->eval(R"script(
 		const WIDTH = 320;
 		const HEIGHT = 200;
