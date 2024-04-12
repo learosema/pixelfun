@@ -15,6 +15,9 @@ file(GLOB SOURCES
 	src/*.h
 	src/*.hpp
 	src/*.cpp
+	src/**/*.h
+	src/**/*.hpp
+	src/**/*.cpp
 )
 
 add_subdirectory(libquickjs)

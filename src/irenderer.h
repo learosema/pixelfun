@@ -1,5 +1,5 @@
 #pragma once
 
-class IRenderer {
+struct IRenderer {
 	virtual void update() = 0;
 };
