@@ -1,7 +1,7 @@
 #include "quickjsenv.h"
 #include <quickjs.h>
 
-QuickJSEnv::QuickJSEnv(const std::string& code)
+QuickJSEnv::QuickJSEnv(const std::string& code, ICanvas& api)
 {
 	m_pRuntime = std::make_shared<qjs::Runtime>();
 	m_pContext = std::make_shared<qjs::Context>(*m_pRuntime);
