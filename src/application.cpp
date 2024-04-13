@@ -7,14 +7,33 @@
 #include "application.h"
 #include "quickjspp.hpp"
 
+Application::Application(size_t width, size_t height)
+{
+	m_width = width;
+	m_height = height;
+	m_pSDL = std::make_shared<SDL>(SDL_INIT_VIDEO);
+
+	m_pWindow = std::make_shared<Window>("pixelfun",
+		SDL_WINDOWPOS_UNDEFINED,
+		SDL_WINDOWPOS_UNDEFINED,
+		640, 400,
+		SDL_WINDOW_RESIZABLE
+	);
+
+	m_pRenderer = std::make_shared<Renderer>(*m_pWindow, -1, SDL_RENDERER_ACCELERATED);
+
+	m_pTexture = std::make_shared<Texture>(*m_pRenderer, SDL_PIXELFORMAT_ARGB8888,
+		SDL_TEXTUREACCESS_STREAMING, m_width, m_height);
+}
+
 int Application::load(const std::string &path)
 {
 	std::string code = (path.length() > 0) ? readFile(path) : "";
 
-	return run(code);
+	return run(code, path);
 }
 
-int Application::run(const std::string &code)
+int Application::run(const std::string &code, const std::string& path)
 {
     qjs::Runtime runtime;
     qjs::Context context(runtime);
@@ -30,24 +49,10 @@ int Application::run(const std::string &code)
 	)script");
 
 	if (code.length() > 0) {
-		context.eval(code);
+		context.eval(code, path.c_str());
 	}
 
 	pxfun_t pxfun = (pxfun_t) context.eval("pixelfun");
-
-	SDL sdl(SDL_INIT_VIDEO);
-
-	Window window("pixelfun",
-		SDL_WINDOWPOS_UNDEFINED,
-		SDL_WINDOWPOS_UNDEFINED,
-		640, 400,
-		SDL_WINDOW_RESIZABLE
-	);
-
-	Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-	Texture texture(renderer, SDL_PIXELFORMAT_ARGB8888,
-		SDL_TEXTUREACCESS_STREAMING, 320, 200);
 
 	while (1)
 	{
@@ -69,11 +74,11 @@ int Application::run(const std::string &code)
 			}
 		}
 
-		renderer.Clear();
-		update(texture, pxfun);
+		m_pRenderer->Clear();
+		update(pxfun);
 
-		renderer.Copy(texture);
-		renderer.Present();
+		m_pRenderer->Copy(*m_pTexture);
+		m_pRenderer->Present();
 
 		SDL_Delay(1000 / 60);
 	}
@@ -81,9 +86,9 @@ int Application::run(const std::string &code)
 	return 0;
 }
 
-void Application::update(Texture& texture, const pxfun_t& fun) {
+void Application::update(const pxfun_t& fun) {
 	auto ticks = SDL_GetTicks() >> 4;
-	auto lock = texture.Lock();
+	auto lock = m_pTexture->Lock();
 	Uint8* pixels = (Uint8*)lock.GetPixels();
 	for (Uint16 y = 0; y < 200; y++) {
 		for (Uint16 x = 0; x < 320; x++) {
