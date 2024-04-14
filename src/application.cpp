@@ -64,7 +64,7 @@ int Application::run(const std::string &code, const std::string& path)
 	)script");
 
 	if (code.length() > 0) {
-		_context->eval(code, path.c_str());
+		_context->eval(code, path.c_str(), JS_EVAL_TYPE_MODULE);
 	}
 
 	pxfun_t pxfun = (pxfun_t) _context->eval("pixelfun");
