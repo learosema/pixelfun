@@ -18,7 +18,7 @@ typedef std::function<void()> setupfun_t;
 class Application
 {
 public:
-	Application(size_t width = 320, size_t height = 200);
+	Application(size_t width = 16, size_t height = 10);
 
 	int load(const std::string& path);
 
@@ -29,11 +29,11 @@ private:
 
 	std::string readFile(const std::string &path);
 
-	size_t m_width = 320;
-	size_t m_height = 200;
+	size_t _width = 320;
+	size_t _height = 200;
 
-	std::shared_ptr<SDL> m_pSDL;
-	std::shared_ptr<Window> m_pWindow;
-	std::shared_ptr<Renderer> m_pRenderer;
-	std::shared_ptr<Texture> m_pTexture;
+	std::shared_ptr<SDL> _sdl;
+	std::shared_ptr<Window> _window;
+	std::shared_ptr<Renderer> _renderer;
+	std::shared_ptr<Texture> _texture;
 };

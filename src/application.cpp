@@ -9,21 +9,21 @@
 
 Application::Application(size_t width, size_t height)
 {
-	m_width = width;
-	m_height = height;
-	m_pSDL = std::make_shared<SDL>(SDL_INIT_VIDEO);
+	_width = width;
+	_height = height;
+	_sdl = std::make_shared<SDL>(SDL_INIT_VIDEO);
 
-	m_pWindow = std::make_shared<Window>("pixelfun",
+	_window = std::make_shared<Window>("pixelfun",
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
 		640, 400,
 		SDL_WINDOW_RESIZABLE
 	);
 
-	m_pRenderer = std::make_shared<Renderer>(*m_pWindow, -1, SDL_RENDERER_ACCELERATED);
+	_renderer = std::make_shared<Renderer>(*_window, -1, SDL_RENDERER_ACCELERATED);
 
-	m_pTexture = std::make_shared<Texture>(*m_pRenderer, SDL_PIXELFORMAT_ARGB8888,
-		SDL_TEXTUREACCESS_STREAMING, m_width, m_height);
+	_texture = std::make_shared<Texture>(*_renderer, SDL_PIXELFORMAT_ARGB8888,
+		SDL_TEXTUREACCESS_STREAMING, _width, _height);
 }
 
 int Application::load(const std::string &path)
@@ -74,11 +74,11 @@ int Application::run(const std::string &code, const std::string& path)
 			}
 		}
 
-		m_pRenderer->Clear();
+		_renderer->Clear();
 		update(pxfun);
 
-		m_pRenderer->Copy(*m_pTexture);
-		m_pRenderer->Present();
+		_renderer->Copy(*_texture);
+		_renderer->Present();
 
 		SDL_Delay(1000 / 60);
 	}
@@ -88,12 +88,12 @@ int Application::run(const std::string &code, const std::string& path)
 
 void Application::update(const pxfun_t& fun) {
 	auto ticks = SDL_GetTicks() >> 4;
-	auto lock = m_pTexture->Lock();
+	auto lock = _texture->Lock();
 	Uint8* pixels = (Uint8*)lock.GetPixels();
-	for (Uint16 y = 0; y < 200; y++) {
-		for (Uint16 x = 0; x < 320; x++) {
+	for (Uint16 y = 0; y < _height; y++) {
+		for (Uint16 x = 0; x < _width; x++) {
 
-			Uint16 i = y * 320 + x;
+			Uint16 i = y * _width + x;
 			double ticks = SDL_GetTicks() / 1000.0;
 			auto color = fun(x, y, ticks);
 			pixels[i * 4 + 0] = static_cast<uint8_t>(std::floor(color[0]));
