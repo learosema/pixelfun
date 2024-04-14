@@ -3,9 +3,14 @@
 #include <fstream>
 #include <string>
 #include <cmath>
+#include <fmt/format.h>
 
 #include "application.h"
-#include "quickjspp.hpp"
+
+void consoleLog(qjs::rest<qjs::Value> args) {
+    for (qjs::Value arg : args) std::cout << arg.toJSON() << " ";
+    std::cout << "\n";
+}
 
 Application::Application(size_t width, size_t height)
 {
@@ -24,6 +29,9 @@ Application::Application(size_t width, size_t height)
 
 	_texture = std::make_shared<Texture>(*_renderer, SDL_PIXELFORMAT_ARGB8888,
 		SDL_TEXTUREACCESS_STREAMING, _width, _height);
+
+	_runtime = std::make_shared<qjs::Runtime>();
+	_context = std::make_shared<qjs::Context>(*_runtime);
 }
 
 int Application::load(const std::string &path)
@@ -35,24 +43,31 @@ int Application::load(const std::string &path)
 
 int Application::run(const std::string &code, const std::string& path)
 {
-    qjs::Runtime runtime;
-    qjs::Context context(runtime);
-	context.eval(R"script(
-		const WIDTH = 320;
-		const HEIGHT = 200;
-	)script");
+	auto& console = _context->addModule("console");
+	console.function<&consoleLog>("log");
 
-	context.eval(R"script(
+	// import module
+	_context->eval(R"script(
+		import * as console from 'console';
+		globalThis.console = console;
+	)script", "<import>", JS_EVAL_TYPE_MODULE);
+
+	_context->eval(fmt::format(R"script(
+		const WIDTH = {};
+		const HEIGHT = {};
+	)script", _width, _height));
+
+	_context->eval(R"script(
 		function pixelfun(x, y, t) {
 			return [255, 0, 0];
 		}
 	)script");
 
 	if (code.length() > 0) {
-		context.eval(code, path.c_str());
+		_context->eval(code, path.c_str());
 	}
 
-	pxfun_t pxfun = (pxfun_t) context.eval("pixelfun");
+	pxfun_t pxfun = (pxfun_t) _context->eval("pixelfun");
 
 	while (1)
 	{
