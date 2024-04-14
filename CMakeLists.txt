@@ -10,6 +10,7 @@ set(SDL2PP_WITH_MIXER OFF) # if you need SDL_mixer support
 set(SDL2PP_WITH_TTF OFF) # if you need SDL_ttf support
 add_subdirectory(libSDL2pp)
 
+add_subdirectory(fmt)
 
 file(GLOB SOURCES
 	src/*.h
@@ -27,4 +28,4 @@ include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${SDL2_INCLUDE_DIRS})
 
 add_executable(${PROJECT_NAME} ${SOURCES})
-target_link_libraries(${PROJECT_NAME} PRIVATE libquickjs SDL2pp::SDL2pp ${SDL2_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt libquickjs SDL2pp::SDL2pp ${SDL2_LIBRARIES})
