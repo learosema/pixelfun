@@ -28,6 +28,8 @@ public:
 private:
 	void update(const pxfun_t& fun);
 
+	void initJSContext();
+
 	std::string readFile(const std::string &path);
 
 	size_t _width;

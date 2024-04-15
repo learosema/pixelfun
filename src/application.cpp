@@ -31,7 +31,7 @@ Application::Application(size_t width, size_t height)
 		SDL_TEXTUREACCESS_STREAMING, _width, _height);
 
 	_runtime = std::make_shared<qjs::Runtime>();
-	_context = std::make_shared<qjs::Context>(*_runtime);
+	_context = nullptr;
 }
 
 int Application::load(const std::string &path)
@@ -41,8 +41,9 @@ int Application::load(const std::string &path)
 	return run(code, path);
 }
 
-int Application::run(const std::string &code, const std::string& path)
+void Application::initJSContext()
 {
+	_context = std::make_shared<qjs::Context>(*_runtime);
 	auto& console = _context->addModule("console");
 	console.function<&consoleLog>("log");
 
@@ -62,9 +63,15 @@ int Application::run(const std::string &code, const std::string& path)
 			return [255, 0, 0];
 		}
 	)script");
+}
 
+
+int Application::run(const std::string &code, const std::string& path)
+{
+	initJSContext();
+	const char * scope = path.c_str();
 	if (code.length() > 0) {
-		_context->eval(code, path.c_str(), JS_EVAL_TYPE_MODULE);
+		_context->eval(code + ";globalThis.pixelfun = pixelfun;", scope, JS_EVAL_TYPE_MODULE);
 	}
 
 	pxfun_t pxfun = (pxfun_t) _context->eval("pixelfun");
@@ -102,7 +109,7 @@ int Application::run(const std::string &code, const std::string& path)
 }
 
 void Application::update(const pxfun_t& fun) {
-	auto ticks = SDL_GetTicks() >> 4;
+	auto ticks = SDL_GetTicks();
 	auto lock = _texture->Lock();
 	Uint8* pixels = (Uint8*)lock.GetPixels();
 	for (Uint16 y = 0; y < _height; y++) {
@@ -111,9 +118,9 @@ void Application::update(const pxfun_t& fun) {
 			Uint16 i = y * _width + x;
 			double ticks = SDL_GetTicks() / 1000.0;
 			auto color = fun(x, y, ticks);
-			pixels[i * 4 + 0] = static_cast<uint8_t>(std::floor(color[0]));
+			pixels[i * 4 + 0] = static_cast<uint8_t>(std::floor(color[2]));
 			pixels[i * 4 + 1] = static_cast<uint8_t>(std::floor(color[1]));
-			pixels[i * 4 + 2] = static_cast<uint8_t>(std::floor(color[2]));
+			pixels[i * 4 + 2] = static_cast<uint8_t>(std::floor(color[0]));
 			pixels[i * 4 + 3] = 255;
 		}
 	}
