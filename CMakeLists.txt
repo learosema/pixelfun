@@ -8,6 +8,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(SDL2PP_WITH_IMAGE ON) # if you need SDL_image support
 set(SDL2PP_WITH_MIXER OFF) # if you need SDL_mixer support
 set(SDL2PP_WITH_TTF OFF) # if you need SDL_ttf support
+set(SDL2PP_STATIC ON)
+
 add_subdirectory(libSDL2pp)
 
 add_subdirectory(fmt)
@@ -28,4 +30,9 @@ include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${SDL2_INCLUDE_DIRS})
 
 add_executable(${PROJECT_NAME} ${SOURCES})
-target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt libquickjs SDL2pp::SDL2pp ${SDL2_LIBRARIES})
+
+set(LIBS fmt::fmt libquickjs SDL2pp::SDL2pp ${SDL2_LIBRARIES})
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+	set(LIBS ${LIBS} pthread)
+endif()
+target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBS})
