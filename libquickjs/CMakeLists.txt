@@ -1,10 +1,11 @@
-cmake_minimum_required(VERSION 3.28 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.21 FATAL_ERROR)
 project(libquickjs C)
 
-set(QUICKJS_VERSION STRING "0.1.0")
+set(QUICKJS_VERSION "0.1.0")
 set(COMPILE_FLAGS -Wall -Wno-array-bounds)
 
 set(CMAKE_C_STANDARD 17)
+set(CMAKE_C_STANDARD_REQUIRED 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # config build target: "Debug" or "Release"
@@ -20,14 +21,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     list(APPEND LINK_LIBRARIES "m")
 endif()
 
-
-
 add_compile_options(${COMPILE_FLAGS})
-add_compile_definitions(
-    -D_GNU_SOURCE
-    -DCONFIG_BIGNUM
-	-DCONFIG_VERSION=${\"QUICKJS_VERSION\"}
-)
 
 add_library(libquickjs
 	./quickjs/quickjs.h
@@ -38,6 +32,12 @@ add_library(libquickjs
 	./quickjs/cutils.c
 	./quickjs/libbf.c
 	./quickjs/quickjs-libc.c
+)
+
+target_compile_definitions(libquickjs PRIVATE
+    _GNU_SOURCE
+    CONFIG_BIGNUM
+	CONFIG_VERSION=\"${QUICKJS_VERSION}\"
 )
 
 file(GLOB QUICKJS_HEADERS

@@ -31,6 +31,8 @@ Pixelfun uses the CMake build system. Additionally, it requires the SDL2 develop
 
 On a mac, the required dependencies can be installed via `brew install cmake sdl2 sdl2_image`. Build instructions on other platforms will follow.
 
+On Linux: `apt instal libsdl2-dev libsdl2-image-dev`
+
 ## Attributions
 
 PixelFun wouldn't be possible without these:
