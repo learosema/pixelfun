@@ -140,4 +140,3 @@ std::string Application::readFile(const std::string& path)
     }
 	return str.str();
 }
-

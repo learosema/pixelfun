@@ -1,18 +1,20 @@
 cmake_minimum_required(VERSION 3.21 FATAL_ERROR)
 project(PixelFun LANGUAGES CXX)
 
+# libSDLpp configuration
+set(SDL2PP_WITH_IMAGE OFF)
+set(SDL2PP_WITH_TTF OFF)
+set(SDL2PP_WITH_MIXER OFF)
+set(SDL2PP_STATIC ON)
+set(SDL2_STATIC ON)
+
 # add compilation flags
 set(CMAKE_CXX_STANDARD 17)
 
-# set up SDL2pp library
-set(SDL2PP_WITH_IMAGE ON) # if you need SDL_image support
-set(SDL2PP_WITH_MIXER OFF) # if you need SDL_mixer support
-set(SDL2PP_WITH_TTF OFF) # if you need SDL_ttf support
-set(SDL2PP_STATIC ON)
+add_subdirectory(vendor/fmt)
+add_subdirectory(vendor/libquickjs)
 
-add_subdirectory(libSDL2pp)
-
-add_subdirectory(fmt)
+add_subdirectory(vendor/libSDL2pp)
 
 file(GLOB SOURCES
 	src/*.h
@@ -23,16 +25,24 @@ file(GLOB SOURCES
 	src/**/*.cpp
 )
 
-add_subdirectory(libquickjs)
 
-find_package(SDL2 REQUIRED)
+# 1. Look for a SDL2 package, 2. look for the SDL2 component and 3. fail if none can be found
+find_package(SDL2 REQUIRED CONFIG REQUIRED COMPONENTS SDL2)
+
+# 1. Look for a SDL2 package, 2. Look for the SDL2maincomponent and 3. DO NOT fail when SDL2main is not available
+find_package(SDL2 REQUIRED CONFIG COMPONENTS SDL2main)
+
+add_executable(${PROJECT_NAME} ${SDL2PP_HEADERS} ${SDL2PP_SOURCES} ${SOURCES})
+
 include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${SDL2_INCLUDE_DIRS})
 
-add_executable(${PROJECT_NAME} ${SOURCES})
 
-set(LIBS fmt::fmt libquickjs SDL2pp::SDL2pp ${SDL2_LIBRARIES})
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	set(LIBS ${LIBS} pthread)
+target_include_directories(${PROJECT_NAME} PRIVATE vendor/libSDL2pp)
+# SDL2::SDL2main may or may not be available. It is e.g. required by Windows GUI applications
+if(TARGET SDL2::SDL2main)
+    # It has an implicit dependency on SDL2 functions, so it MUST be added before SDL2::SDL2 (or SDL2::SDL2-static)
+    target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2main)
 endif()
-target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBS})
+
+target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt libquickjs SDL2pp::SDL2pp ${SDL2_LIBRARIES})

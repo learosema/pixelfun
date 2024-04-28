@@ -21,6 +21,10 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     list(APPEND LINK_LIBRARIES "m")
 endif()
 
+if(MINGW)
+	list(APPEND LINK_LIBRARIES "pthread")
+endif()
+
 add_compile_options(${COMPILE_FLAGS})
 
 add_library(libquickjs
