@@ -1,9 +1,9 @@
-[submodule "libSDL2pp"]
-	path = libSDL2pp
-	url = https://github.com/libSDL2pp/libSDL2pp.git
-[submodule "libquickjs/quickjs"]
-	path = libquickjs/quickjs
+[submodule "vendor/libquickjs/quickjs"]
+	path = vendor/libquickjs/quickjs
 	url = https://github.com/bellard/quickjs.git
-[submodule "fmt"]
-	path = fmt
-	url = https://github.com/fmtlib/fmt.git
+[submodule "vendor/fmt"]
+	path = vendor/fmt
+	url = https://github.com/fmtlib/fmt.git‚
+[submodule "vendor/libSDL2pp"]
+	path = vendor/libSDL2pp
+	url = https://github.com/learosema/libSDL2pp.git
