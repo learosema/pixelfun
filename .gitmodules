@@ -3,7 +3,7 @@
 	url = https://github.com/bellard/quickjs.git
 [submodule "vendor/fmt"]
 	path = vendor/fmt
-	url = https://github.com/fmtlib/fmt.git‚
+	url = https://github.com/fmtlib/fmt.git
 [submodule "vendor/libSDL2pp"]
 	path = vendor/libSDL2pp
 	url = https://github.com/learosema/libSDL2pp.git
