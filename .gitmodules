@@ -4,6 +4,3 @@
 [submodule "vendor/fmt"]
 	path = vendor/fmt
 	url = https://github.com/fmtlib/fmt.git
-[submodule "libSDL2pp"]
-	path = libSDL2pp
-	url = git@github.com:learosema/libSDL2pp.git
