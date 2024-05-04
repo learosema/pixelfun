@@ -22,6 +22,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 endif()
 
 if(MINGW)
+	set(COMPILE_FLAGS ${COMPILE_FLAGS} -static-libgcc)
 	list(APPEND LINK_LIBRARIES "pthread")
 endif()
 

@@ -1,4 +1,7 @@
 cmake_minimum_required(VERSION 3.21 FATAL_ERROR)
+if (MINGW)
+
+endif()
 project(PixelFun LANGUAGES CXX)
 
 # libSDLpp configuration
@@ -7,6 +10,11 @@ set(SDL2PP_WITH_TTF OFF)
 set(SDL2PP_WITH_MIXER OFF)
 set(SDL2PP_STATIC ON)
 set(SDL2_STATIC ON)
+
+if (MINGW)
+	# message(STATUS doing stuff with mingw)
+	set(SDL2_DIR "vendor/mingw/SDL-2.30.2/cmake")
+endif()
 
 # add compilation flags
 set(CMAKE_CXX_STANDARD 17)
@@ -27,10 +35,11 @@ file(GLOB SOURCES
 
 
 # 1. Look for a SDL2 package, 2. look for the SDL2 component and 3. fail if none can be found
-find_package(SDL2 REQUIRED CONFIG REQUIRED COMPONENTS SDL2)
+# find_package(SDL2 REQUIRED CONFIG REQUIRED COMPONENTS SDL2)
 
 # 1. Look for a SDL2 package, 2. Look for the SDL2maincomponent and 3. DO NOT fail when SDL2main is not available
-find_package(SDL2 REQUIRED CONFIG COMPONENTS SDL2main)
+# find_package(SDL2 REQUIRED CONFIG COMPONENTS SDL2main)
+find_package(SDL2 REQUIRED)
 
 add_executable(${PROJECT_NAME} ${SDL2PP_HEADERS} ${SDL2PP_SOURCES} ${SOURCES})
 
@@ -43,6 +52,10 @@ target_include_directories(${PROJECT_NAME} PRIVATE vendor/libSDL2pp)
 if(TARGET SDL2::SDL2main)
     # It has an implicit dependency on SDL2 functions, so it MUST be added before SDL2::SDL2 (or SDL2::SDL2-static)
     target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2main)
+endif()
+
+if(MINGW)
+	target_compile_options(${PROJECT_NAME} PRIVATE -static-libgcc -static-libstdc++)
 endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt libquickjs SDL2pp::SDL2pp ${SDL2_LIBRARIES})
