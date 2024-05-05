@@ -31,15 +31,18 @@ First things first, remember to also check out submodules:
 git clone --recurse-submodules git@github.com:learosema/pixelfun.git
 ```
 
-Pixelfun uses the CMake build system. Additionally, it requires the SDL2 development files installed on the system.
+Pixelfun uses the CMake meta build system, and optionally ninja (make as fallback). Additionally, it requires the SDL2 development files installed on the system.
 
-On a mac, the required dependencies can be installed via `brew install cmake sdl2 sdl2_image`. Build instructions on other platforms will follow.
+On a mac, the required dependencies can be installed via `brew install cmake ninja-build sdl2 sdl2_image`. Build instructions on other platforms will follow.
 
-On Linux: `apt install libsdl2-dev libsdl2-image-dev`
+On Linux: `sudo apt install cmake ninja-build libsdl2-dev libsdl2-image-dev`
 
-## Cross compilation to Windows (via MingW32)
+## Cross compilation to Windows (via MingW)
 
-I'm providing a cmake toolchain file for MingW32.
+I'm providing a cmake toolchain file for MingW.
+
+To install the mingw toolchain on a Mac, run: `brew install mingw-w64` (or Linuc `sudo apt install mingw-w64`).
+
 To install the SDL2 binaries, I'm providing an install script (`scripts/install-sdl2-mingw-cross.sh`).
 
 You can cross compile it from osx or linux via `scripts/mingw-build.sh`.
@@ -51,6 +54,7 @@ All this stuff is still new to me, I haven't done non-web-development (C++) for 
 PixelFun wouldn't be possible without these:
 
 - [CMake](https://cmake.org)
+- [Ninja](https://ninja-build.org/)
 - [SDL2](https://libsdl.org)
 - [QuickJS](https://bellard.org/quickjs/)
 - [QuickJSpp](https://github.com/ftk/quickjspp/)
