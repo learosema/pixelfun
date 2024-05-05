@@ -1,10 +1,6 @@
 #!/bin/sh
-mkdir -p build
-cd build
+mkdir -p build/release
 
-cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=../cmake/x86_64-w64-mingw32.cmake ..
-if [ -x ninja ]; then
-	ninja
-else
-	make
-fi
+cmake --preset release -DCMAKE_TOOLCHAIN_FILE=./cmake/x86_64-w64-mingw32.cmake .
+cd build/release
+ninja
