@@ -4,8 +4,6 @@
 
 #include "application.h"
 
-using namespace std;
-
 int main(int argc, char* argv[])
 {
 	Application app;
@@ -13,14 +11,13 @@ int main(int argc, char* argv[])
 		return app.load(std::string(argc == 2 ? argv[1] : ""));
 
 	}
-	catch (exception &e)
-	{
-		cerr << e.what() << endl;
-		return 1;
-	}
 	catch (qjs::exception &e) {
-		cerr << (std::string)qjs::Value(e.get()) << endl;
+		std::cerr << (std::string)qjs::Value(e.get()) << std::endl;
 		return 1;
 	}
-
+	catch (std::exception &e)
+	{
+		std::cerr << e.what() << std::endl;
+		return 1;
+	}
 }
