@@ -5,7 +5,7 @@ endif ()
 
 set(QUICKJS_VERSION "0.1.0")
 
-# Do I need this?
+# TODO Do I need this?
 # set(COMPILE_FLAGS -Wall -Wno-array-bounds)
 # set(CMAKE_C_STANDARD 17)
 # set(CMAKE_C_STANDARD_REQUIRED 17)
@@ -39,7 +39,7 @@ foreach(Item IN LISTS QUICKJS_HEADERS)
 	file(COPY_FILE ${Item} include/${HFile})
 endforeach()
 
-target_include_directories(libquickjs PUBLIC include)
+
 
 # add -lm if on Linux to handle math.h
 # see: https://askubuntu.com/a/332919
@@ -47,17 +47,16 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     target_link_libraries(quickjs PRIVATE m)
 endif()
 
-# Do i need this?
+# TODO Do i need this?
 # if(MINGW)
 # 	set(COMPILE_FLAGS ${COMPILE_FLAGS} -static-libgcc)
 # 	list(APPEND LINK_LIBRARIES "pthread")
 # endif()
 
-target_include_directories(imgui PUBLIC ${imgui_SOURCE_DIR})
-target_compile_definitions(libquickjs PRIVATE
+target_include_directories(quickjs PUBLIC include)
+target_compile_definitions(quickjs PRIVATE
 	_GNU_SOURCE
 	CONFIG_BIGNUM
 	CONFIG_VERSION=\"${QUICKJS_VERSION}\"
 )
 target_compile_features(quickjs PRIVATE c_std_17)
-
