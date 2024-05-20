@@ -1,7 +1,4 @@
 cmake_minimum_required(VERSION 3.21 FATAL_ERROR)
-if (MINGW)
-
-endif()
 project(PixelFun LANGUAGES CXX)
 
 # libSDLpp configuration
