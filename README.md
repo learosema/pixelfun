@@ -66,6 +66,8 @@ Enjoy 💖
 
 PixelFun wouldn't be possible without these:
 
+- [Angela Galliat](https://github.com/agalliat) helped [Lea](https://lea.codes) dusting off her C++ knowledge.
+- [cpp-gui-template-sdl2-opengl](https://github.com/MartinHelmut/cpp-gui-template-sdl2-opengl) by [Martin Fieber](https://martin-fieber.de)
 - [CMake](https://cmake.org)
 - [Ninja](https://ninja-build.org/)
 - [SDL2](https://libsdl.org)
