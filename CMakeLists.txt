@@ -3,13 +3,13 @@ cmake_minimum_required(VERSION 3.22 FATAL_ERROR)
 include(cmake/AppleBuild.cmake)
 
 project(
-  PixelfFun
+  PixelFun
   DESCRIPTION "Base gui project setup with SDL2 and OpenGL."
   VERSION 1.0.0
   LANGUAGES C CXX)
 
-set(PROJECT_COMPANY_NAME "Lea Codes")
-set(PROJECT_COMPANY_NAMESPACE "codes.lea")  # Reverse domain name notation
+set(PROJECT_COMPANY_NAME "Two Girls Coding Power")
+set(PROJECT_COMPANY_NAMESPACE "com.tgcp")  # Reverse domain name notation
 
 include(cmake/StandardProjectSettings.cmake)
 include(GNUInstallDirs)

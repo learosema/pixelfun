@@ -3,14 +3,6 @@
 PixelFun is a JavaScript playground for creative development. It is a standalone application
 Basically it is QuickJS + SDL2 = PixelFun.
 
-## Prerequisites
-
-First things first, remember to also check out submodules:
-
-```sh
-git clone --recurse-submodules git@github.com:learosema/pixelfun.git
-```
-
 ## Dependencies
 
 Pixelfun uses the CMake meta build system, and optionally ninja (make as fallback). Additionally, it requires the SDL2 development files installed on the system.
