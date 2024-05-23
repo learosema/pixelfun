@@ -23,8 +23,14 @@ sudo apt install cmake ninja-build libsdl2-dev libsdl2-image-dev`
 # Create makefile
 cmake --preset release
 
-# Build project
+# Build project (the executable can then be found at 'build/release/src/app/PixelFun.*')
 cmake --build build/release
+
+# Package project (the package can the be found at 'distribution/PixelFun-X.Y.Z.*')
+cpack --config build/release/CPackConfig.cmake
+
+# Package project source
+cpack --config build/release/CPackSourceConfig.cmake
 ```
 
 ## Cross compilation to Windows (via MingW)
@@ -33,7 +39,7 @@ I'm providing a cmake toolchain file for MingW.
 
 To install the mingw toolchain on a Mac, run: `brew install mingw-w64` (or Linux `sudo apt install mingw-w64`).
 
-To install the SDL2 binaries, I'm providing an install script (`scripts/install-sdl2-mingw-cross.sh`).
+To install the SDL2 binaries, I'm providing an install script (`sudo ./scripts/install-sdl2-mingw-cross.sh`).
 
 You can cross compile it from osx or linux via `scripts/mingw-build.sh`.
 
@@ -64,10 +70,12 @@ Enjoy 💖
 
 ## Attributions
 
-PixelFun wouldn't be possible without these:
+PixelFun wouldn't be possible without:
 
 - [Angela Galliat](https://github.com/agalliat) helped [Lea](https://lea.codes) dusting off her C++ knowledge.
+
 - [cpp-gui-template-sdl2-opengl](https://github.com/MartinHelmut/cpp-gui-template-sdl2-opengl) by [Martin Fieber](https://martin-fieber.de)
+
 - [CMake](https://cmake.org)
 - [Ninja](https://ninja-build.org/)
 - [SDL2](https://libsdl.org)
