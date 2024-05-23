@@ -1,5 +1,6 @@
 # PixelFun
 
+PixelFun is a JavaScript playground for creative development. It is a standalone application
 Basically it is QuickJS + SDL2 = PixelFun.
 
 ## Prerequisites
