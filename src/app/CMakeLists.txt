@@ -1,4 +1,5 @@
-set(NAME "App")
+set(NAME "PixelFun")
+set(EXECUTABLE_NAME ${NAME})
 
 include(${PROJECT_SOURCE_DIR}/cmake/StaticAnalyzers.cmake)
 
