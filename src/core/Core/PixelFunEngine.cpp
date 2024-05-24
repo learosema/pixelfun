@@ -93,9 +93,9 @@ void PixelFunEngine::frame()
 
 			uint16_t i = (y * _width + x);
 			auto color = pxfun(x, y, ticks);
-			pixels[i * 4 + 0] = static_cast<uint8_t>(std::floor(color[2]));
+			pixels[i * 4 + 0] = static_cast<uint8_t>(std::floor(color[0]));
 			pixels[i * 4 + 1] = static_cast<uint8_t>(std::floor(color[1]));
-			pixels[i * 4 + 2] = static_cast<uint8_t>(std::floor(color[0]));
+			pixels[i * 4 + 2] = static_cast<uint8_t>(std::floor(color[2]));
 			pixels[i * 4 + 3] = 255;
 		}
 	}
