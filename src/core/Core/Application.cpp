@@ -152,8 +152,9 @@ namespace App
                 {
                     GLuint tex = m_engine->getTextureId();
 
-                    auto texSize = ImGui::GetContentRegionAvail();
+
                     ImGui::Begin("Result", &m_show_some_panel);
+                    auto texSize = ImGui::GetContentRegionAvail();
                     ImGui::Image(
                         (void *)(intptr_t)tex,
                         texSize
