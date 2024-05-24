@@ -10,8 +10,11 @@ void consoleLog(qjs::rest<qjs::Value> args) {
 
 PixelFunEngine::PixelFunEngine(const uint16_t width, const uint16_t height)
 {
-    _runtime = std::make_unique<qjs::Runtime>();
-    _texture = std::make_unique<GLTex>(width, height);
+    _width = width;
+    _height = height;
+    _runtime = std::make_shared<qjs::Runtime>();
+    _texture = std::make_shared<GLTex>(width, height);
+    runScript("");
 }
 
 PixelFunEngine::~PixelFunEngine()
@@ -22,7 +25,7 @@ PixelFunEngine::~PixelFunEngine()
 void PixelFunEngine::runScript(const std::string &javascript)
 {
     _context.reset();
-    _context = std::make_unique<qjs::Context>(*(_runtime.get()));
+    _context = std::make_shared<qjs::Context>(*(_runtime.get()));
 	auto& console = _context->addModule("console");
 	console.function<&consoleLog>("log");
 
@@ -38,9 +41,43 @@ void PixelFunEngine::runScript(const std::string &javascript)
 	)script", _width, _height));
 
 	_context->eval(R"script(
-		function pixelfun(x, y, t) {
-			return [255, 0, 0];
-		}
+/**
+ * Cosine based palette, 4 vec3 params
+ * @see https://iquilezles.org/articles/palettes/
+ * @param {float} t a parameter between 0..1 (can be bigger, lower but repeats)
+ * @param {[number, number, number]} a first vector
+ * @param {[number, number, number]} b second vector
+ * @param {[number, number, number]} c third vector
+ * @param {[number, number, number]} d fourth vector
+ * @returns {[number, number, number]} an RGB value
+ */
+function palette(t, a, b, c, d)
+{
+	const twoPI = 2 * Math.PI;
+	return [
+		a[0] + b[0] * Math.cos(twoPI * (c[0] * t + d[0])),
+		a[1] + b[1] * Math.cos(twoPI * (c[1] * t + d[1])),
+		a[2] + b[2] * Math.cos(twoPI * (c[2] * t + d[2]))
+	].map(val => Math.round(val*255));
+}
+
+function twilight(t) {
+	return palette(t,
+		[0.5, 0.5, 0.5],
+		[0.5, 0.5, 0.5],
+		[2.0, 1.0, 0.0],
+		[0.5, 0.2, 0.25]
+	);
+}
+
+function pixelfun(x, y, t) {
+	const { sin, cos } = Math;
+	const i = 0.5+0.5*sin(x*0.5 + t);
+	const j = 0.5+0.5*cos(y*0.5 + t);
+
+	return twilight(t * 0.2 + i*j);
+}
+
 	)script");
     _context->eval(javascript + ";globalThis.pixelfun = pixelfun;", "<main>", JS_EVAL_TYPE_MODULE);
 }
@@ -49,11 +86,12 @@ void PixelFunEngine::frame()
 {
 	pxfun_t pxfun = static_cast<pxfun_t>(_context->eval("pixelfun"));
 	double ticks = SDL_GetTicks() / 1000.0;
-
+    assert(_texture != nullptr);
 	auto pixels = _texture->getPixels();
-	for (Uint16 y = 0; y < _height; y++) {
-		for (Uint16 x = 0; x < _width; x++) {
-			Uint16 i = y * _width + x;
+	for (uint16_t y = 0; y < _height; y++) {
+		for (uint16_t x = 0; x < _width; x++) {
+
+			uint16_t i = (y * _width + x);
 			auto color = pxfun(x, y, ticks);
 			pixels[i * 4 + 0] = static_cast<uint8_t>(std::floor(color[2]));
 			pixels[i * 4 + 1] = static_cast<uint8_t>(std::floor(color[1]));
@@ -61,6 +99,7 @@ void PixelFunEngine::frame()
 			pixels[i * 4 + 3] = 255;
 		}
 	}
+    _texture->update();
 }
 
 void PixelFunEngine::resize(const uint16_t width, const uint16_t height)

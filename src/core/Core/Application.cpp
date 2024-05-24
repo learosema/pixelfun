@@ -23,7 +23,8 @@ namespace App
     {
         APP_PROFILE_FUNCTION();
 
-        const unsigned int init_flags{SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER};
+        const unsigned int init_flags{
+            SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER};
         if (SDL_Init(init_flags) != 0)
         {
             APP_ERROR("Error: %s\n", SDL_GetError());
@@ -36,7 +37,7 @@ namespace App
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
         m_window = std::make_unique<Window>(Window::Settings{title});
-        m_engine = std::make_unique<PixelFunEngine>((uint16_t)80, (uint16_t)40);
+
     }
 
     Application::~Application()
@@ -89,6 +90,8 @@ namespace App
         // Setup Platform/Renderer backends
         ImGui_ImplSDL2_InitForOpenGL(m_window->get_native_window(), m_window->get_native_context());
         ImGui_ImplOpenGL3_Init("#version 410 core");
+
+        m_engine = std::make_unique<PixelFunEngine>((uint16_t)80, (uint16_t)40);
 
         m_running = true;
         while (m_running)
@@ -147,14 +150,16 @@ namespace App
                 // Whatever GUI to implement here ...
                 if (m_show_some_panel)
                 {
-                    ImGui::Begin("Some panel", &m_show_some_panel);
-                    ImGui::Text("Hello World");
-                    /* ImGui::Image(
-                        (void *)(intptr_t)(m_engine->getTextureId()),
-                        ImVec2(256, 256),
-                        ImVec2(0.0f, 0.0f),
-                        ImVec2(1.0f, 1.0f)
-                    ); */
+                    GLuint tex = m_engine->getTextureId();
+
+                    auto texSize = ImGui::GetContentRegionAvail();
+                    ImGui::Begin("Result", &m_show_some_panel);
+                    ImGui::Image(
+                        (void *)(intptr_t)tex,
+                        texSize
+                    );
+
+
                     ImGui::End();
                 }
 
@@ -179,6 +184,7 @@ namespace App
             }
 
             // Rendering
+            m_engine->frame();
             ImGui::Render();
 
             glViewport(0, 0, static_cast<int>(io.DisplaySize.x), static_cast<int>(io.DisplaySize.y));

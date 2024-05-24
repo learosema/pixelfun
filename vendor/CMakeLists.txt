@@ -47,7 +47,8 @@ FetchContent_Declare(
 FetchContent_Declare(
   imgui
   GIT_REPOSITORY "https://github.com/ocornut/imgui.git"
-  GIT_TAG 085781f5ca5372d5fc804d7e44b5bf27a8994af7 # Branch: docking, date: 19.03.2024, 06:52 GMT+1
+  # GIT_TAG 085781f5ca5372d5fc804d7e44b5bf27a8994af7 # Branch: docking, date: 19.03.2024, 06:52 GMT+1
+  GIT_TAG 975beafafdcf8cdfa1b83261ce8c8cbeaa28091b # docking / 24.05.2024, 22:34 GMT+1
 )
 
 # Settings

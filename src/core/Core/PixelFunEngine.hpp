@@ -21,10 +21,13 @@ public:
 
     inline GLuint getTextureId() const { return _texture->getTexture(); }
 
+    inline uint16_t getWidth() const { return _width; }
+    inline uint16_t getHeight() const { return _height; }
+
 private:
     uint16_t _width;
     uint16_t _height;
-    std::unique_ptr<GLTex> _texture = nullptr;
-    std::unique_ptr<qjs::Runtime> _runtime = nullptr;
-	std::unique_ptr<qjs::Context> _context = nullptr;
+    std::shared_ptr<GLTex> _texture = nullptr;
+    std::shared_ptr<qjs::Runtime> _runtime = nullptr;
+	std::shared_ptr<qjs::Context> _context = nullptr;
 };

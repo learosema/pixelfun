@@ -15,10 +15,10 @@
 class GLTex {
 
 public:
-    explicit GLTex(uint32_t width, uint32_t height, uint8_t channels = 4);
+    explicit GLTex(uint32_t width, uint32_t height);
     virtual ~GLTex();
 
-    inline uint8_t* getPixels() const { return _data.get(); }
+    inline uint8_t* getPixels() const { return _data; }
     inline GLuint   getTexture() const { return _texture; }
 
     void update();
@@ -28,5 +28,5 @@ private:
     uint32_t _width;
     uint32_t _height;
     uint8_t _channels;
-    std::unique_ptr<uint8_t[]> _data;
+    uint8_t* _data;
 };
