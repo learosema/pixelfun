@@ -5,6 +5,7 @@
 #include <backends/imgui_impl_sdl2.h>
 #include <glad/glad.h>
 #include <imgui.h>
+#include <zep_helpers.h>
 
 #include <memory>
 #include <string>
@@ -15,6 +16,7 @@
 #include "Core/Resources.hpp"
 #include "Core/Window.hpp"
 #include "Settings/Project.hpp"
+
 
 namespace App
 {
@@ -54,7 +56,7 @@ namespace App
     ExitStatus App::Application::run()
     {
         APP_PROFILE_FUNCTION();
-
+        bool zep_initialized{false};
         if (m_exit_status == ExitStatus::FAILURE)
         {
             return m_exit_status;
@@ -139,6 +141,7 @@ namespace App
                     if (ImGui::BeginMenu("View"))
                     {
                         ImGui::MenuItem("Some Panel", nullptr, &m_show_some_panel);
+                        ImGui::MenuItem("Show Code", nullptr, &m_show_code);
                         ImGui::MenuItem("ImGui Demo Panel", nullptr, &m_show_demo_panel);
                         ImGui::MenuItem("Debug Panel", nullptr, &m_show_debug_panel);
                         ImGui::EndMenu();
@@ -162,6 +165,23 @@ namespace App
 
 
                     ImGui::End();
+                }
+
+                if (!zep_initialized)
+                {
+                    // Called once the fonts/device is guaranteed setup
+                    zep_init(Zep::NVec2f(font_scaling_factor, font_scaling_factor));
+                    zep_get_editor().InitWithText(m_filename, m_code);
+                    zep_initialized = true;
+                }
+
+                if (m_show_code) {
+                    // Required for CTRL+P and flashing cursor.
+                    zep_update();
+
+                    // Just show it
+                    static Zep::NVec2i size = Zep::NVec2i(640, 480);
+                    zep_show(size);
                 }
 
                 // ImGUI demo panel

@@ -51,6 +51,11 @@ FetchContent_Declare(
   GIT_TAG 975beafafdcf8cdfa1b83261ce8c8cbeaa28091b # docking / 24.05.2024, 22:34 GMT+1
 )
 
+FetchContent_Declare(
+    zep
+    GIT_REPOSITORY "https://github.com/Rezonality/zep.git"
+    GIT_TAG e743a43c384796dc0fc449245d9edf42390a7124
+)
 # Settings
 
 # For SDL2 to be able to override options
@@ -73,4 +78,8 @@ add_subdirectory(imgui-setup)
 
 # Populate
 
+
+
 FetchContent_MakeAvailable(doctest fmt glad imgui quickjs SDL2 libsdl2pp spdlog)
+
+add_subdirectory(zep_imgui)

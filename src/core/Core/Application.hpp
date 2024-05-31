@@ -46,8 +46,12 @@ namespace App
         bool m_running{true};
         bool m_minimized{false};
         bool m_show_some_panel{true};
+        bool m_show_code{true};
         bool m_show_debug_panel{false};
         bool m_show_demo_panel{false};
+
+        std::string m_filename{"new.js"};
+        std::string m_code{"function pixelfun(x,y,t) { return [255, 0, 255]; }"};
     };
 
 } // namespace App

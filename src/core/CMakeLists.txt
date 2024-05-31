@@ -24,10 +24,11 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     Platform/Linux/Resources.cpp Platform/Linux/DPIHandler.cpp)
 endif ()
 
+
 target_include_directories(${NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_compile_features(${NAME} PRIVATE cxx_std_20)
 target_link_libraries(${NAME}
   PRIVATE project_warnings
-  PUBLIC fmt spdlog SDL2::SDL2 glad imgui quickjs Settings)
+  PUBLIC fmt spdlog SDL2::SDL2 glad imgui quickjs Settings Zep::Zep zep_imgui)
 
 add_subdirectory(Tests)
