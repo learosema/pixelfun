@@ -60,6 +60,19 @@
     "unordered_set": "cpp",
     "variant": "cpp",
     "vector": "cpp",
-    "algorithm": "cpp"
+    "algorithm": "cpp",
+    "deque": "cpp",
+    "list": "cpp",
+    "any": "cpp",
+    "codecvt": "cpp",
+    "condition_variable": "cpp",
+    "execution": "cpp",
+    "numbers": "cpp",
+    "queue": "cpp",
+    "semaphore": "cpp",
+    "source_location": "cpp",
+    "span": "cpp",
+    "stack": "cpp",
+    "typeindex": "cpp"
   }
 }

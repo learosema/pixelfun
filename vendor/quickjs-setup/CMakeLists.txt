@@ -6,7 +6,6 @@ endif ()
 set(QUICKJS_VERSION "0.1.0")
 
 # TODO Do I need this?
-# set(COMPILE_FLAGS -Wall -Wno-array-bounds)
 # set(CMAKE_C_STANDARD 17)
 # set(CMAKE_C_STANDARD_REQUIRED 17)
 # set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -18,7 +17,7 @@ set(QUICKJS_VERSION "0.1.0")
 #     set(COMPILE_FLAGS ${COMPILE_FLAGS} -O3)
 # endif()
 
-add_library(libquickjs
+add_library(quickjs
 	${quickjs_SOURCE_DIR}/quickjs.h
 	${quickjs_SOURCE_DIR}/quickjs-libc.h
 	${quickjs_SOURCE_DIR}/quickjs.c
@@ -28,15 +27,14 @@ add_library(libquickjs
 	${quickjs_SOURCE_DIR}/libbf.c
 	${quickjs_SOURCE_DIR}/quickjs-libc.c
 )
-
 file(GLOB QUICKJS_HEADERS
-  ./quickjs/*.h
+    ${quickjs_SOURCE_DIR}/*.h
 )
-file(MAKE_DIRECTORY include)
+file(MAKE_DIRECTORY ${quickjs_SOURCE_DIR}/include)
 
 foreach(Item IN LISTS QUICKJS_HEADERS)
 	cmake_path(GET Item FILENAME HFile)
-	file(COPY_FILE ${Item} include/${HFile})
+	file(COPY_FILE ${Item} ${quickjs_SOURCE_DIR}/include/${HFile})
 endforeach()
 
 
@@ -53,10 +51,12 @@ endif()
 # 	list(APPEND LINK_LIBRARIES "pthread")
 # endif()
 
-target_include_directories(quickjs PUBLIC include)
+target_compile_features(quickjs PRIVATE c_std_17)
+target_compile_options(quickjs PUBLIC -Wall -Wno-error -Wno-sign-conversion -Wno-shorten-64-to-32 -Wno-array-bounds -Wno-c99-extensions -Wno-unused-parameter)
+
+target_include_directories(quickjs PUBLIC ${quickjs_SOURCE_DIR}/include)
 target_compile_definitions(quickjs PRIVATE
 	_GNU_SOURCE
 	CONFIG_BIGNUM
 	CONFIG_VERSION=\"${QUICKJS_VERSION}\"
 )
-target_compile_features(quickjs PRIVATE c_std_17)
