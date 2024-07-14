@@ -52,7 +52,11 @@ endif()
 # endif()
 
 target_compile_features(quickjs PRIVATE c_std_17)
-target_compile_options(quickjs PUBLIC -Wall -Wno-error -Wno-sign-conversion -Wno-shorten-64-to-32 -Wno-array-bounds -Wno-c99-extensions -Wno-unused-parameter)
+if(MSVC)
+    target_compile_options(quickjs PUBLIC /W4 /wd4146 /wd4245)
+else()
+    target_compile_options(quickjs PUBLIC -Wno-error -Wall -Wno-sign-conversion -Wno-shorten-64-to-32 -Wno-array-bounds -Wno-c99-extensions -Wno-unused-parameter)
+endif()
 
 target_include_directories(quickjs PUBLIC ${quickjs_SOURCE_DIR}/include)
 target_compile_definitions(quickjs PRIVATE

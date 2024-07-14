@@ -8,7 +8,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_DEBUG_POSTFIX "-debug")
 set(CMAKE_RELWITHDEBINFO_POSTFIX "-reldbg")
 
-find_package(SDL2 REQUIRED)
+# find_package(SDL2 REQUIRED)
 # find_package(Freetype REQUIRED)
 
 FetchContent_Declare(
@@ -105,7 +105,12 @@ target_include_directories(Zep
         ${ZEP_ROOT}/include
     )
 
-target_compile_options(Zep PRIVATE -Wno-error -Wno-deprecated-declarations -Wno-float-conversion -Wno-non-virtual-dtor -Wno-unused-variable -Wno-reorder-ctor)
+if (MSVC)
+    target_compile_options(Zep PRIVATE /W4 /wd4146 /wd4245)
+else()
+    target_compile_options(Zep PRIVATE -Wno-error -Wno-deprecated-declarations -Wno-float-conversion -Wno-non-virtual-dtor -Wno-unused-variable -Wno-reorder-ctor)
+endif()
+
 target_compile_definitions(Zep PRIVATE -DZEP_USE_SDL)
 
 # Set this to get the default file system

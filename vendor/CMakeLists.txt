@@ -33,12 +33,6 @@ FetchContent_Declare(
 )
 
 FetchContent_Declare(
-	libSDL2pp
-	GIT_REPOSITORY https://github.com/libSDL2pp/libSDL2pp.git
-	GIT_TAG 1447f88546061e663ebdc878e94bfc6ed95ab6fb
-)
-
-FetchContent_Declare(
   spdlog
   GIT_REPOSITORY "https://github.com/gabime/spdlog.git"
   GIT_TAG v1.13.0
@@ -80,6 +74,6 @@ add_subdirectory(imgui-setup)
 
 
 
-FetchContent_MakeAvailable(doctest fmt glad imgui quickjs SDL2 libsdl2pp spdlog)
+FetchContent_MakeAvailable(doctest fmt glad imgui quickjs SDL2 spdlog)
 
 add_subdirectory(zep_imgui)

@@ -19,3 +19,4 @@ CMakeUserPresets.json
 # Junk
 .DS_Store
 Thumbs.db
+.vs/
